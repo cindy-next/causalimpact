@@ -362,37 +362,37 @@ class CausalImpact(object):
         post_point_lower = post_inf.loc[:, "point_pred_lower"]
 
         mean_resp = post_point_resp.mean()
-        mean_resp_fmt = int(mean_resp)
+        mean_resp_fmt = "{:.1f}".format(mean_resp)
         cum_resp = post_point_resp.sum()
-        cum_resp_fmt = int(cum_resp)
+        cum_resp_fmt = "{:.1f}".format(cum_resp)
         mean_pred = post_point_pred.mean()
-        mean_pred_fmt = int(post_point_pred.mean())
+        mean_pred_fmt = "{:.1f}".format(post_point_pred.mean())
         cum_pred = post_point_pred.sum()
-        cum_pred_fmt = int(cum_pred)
+        cum_pred_fmt = "{:.1f}".format(cum_pred)
         mean_lower = post_point_lower.mean()
-        mean_lower_fmt = int(mean_lower)
+        mean_lower_fmt = "{:.1f}".format(mean_lower)
         mean_upper = post_point_upper.mean()
-        mean_upper_fmt = int(mean_upper)
+        mean_upper_fmt = "{:.1f}".format(mean_upper)
         mean_ci_fmt = [mean_lower_fmt, mean_upper_fmt]
         cum_lower = post_point_lower.sum()
-        cum_lower_fmt = int(cum_lower)
+        cum_lower_fmt = "{:.1f}".format(cum_lower)
         cum_upper = post_point_upper.sum()
-        cum_upper_fmt = int(cum_upper)
+        cum_upper_fmt = "{:.1f}".format(cum_upper)
         cum_ci_fmt = [cum_lower_fmt, cum_upper_fmt]
 
         abs_effect = (post_point_resp - post_point_pred).mean()
-        abs_effect_fmt = int(abs_effect)
+        abs_effect_fmt = "{:.1f}".format(abs_effect)
         cum_abs_effect = (post_point_resp - post_point_pred).sum()
-        cum_abs_effect_fmt = int(cum_abs_effect)
+        cum_abs_effect_fmt = "{:.1f}".format(cum_abs_effect)
         abs_effect_lower = (post_point_resp - post_point_lower).mean()
-        abs_effect_lower_fmt = int(abs_effect_lower)
+        abs_effect_lower_fmt = "{:.1f}".format(abs_effect_lower)
         abs_effect_upper = (post_point_resp - post_point_upper).mean()
-        abs_effect_upper_fmt = int(abs_effect_upper)
+        abs_effect_upper_fmt = "{:.1f}".format(abs_effect_upper)
         abs_effect_ci_fmt = [abs_effect_lower_fmt, abs_effect_upper_fmt]
         cum_abs_lower = (post_point_resp - post_point_lower).sum()
-        cum_abs_lower_fmt = int(cum_abs_lower)
+        cum_abs_lower_fmt = "{:.1f}".format(cum_abs_lower)
         cum_abs_upper = (post_point_resp - post_point_upper).sum()
-        cum_abs_upper_fmt = int(cum_abs_upper)
+        cum_abs_upper_fmt = "{:.1f}".format(cum_abs_upper)
         cum_abs_effect_ci_fmt = [cum_abs_lower_fmt, cum_abs_upper_fmt]
 
         rel_effect = abs_effect / mean_pred * 100
@@ -412,8 +412,8 @@ class CausalImpact(object):
                                  cum_rel_effect_upper_fmt]
         
         #assuming approximately normal distribution
-        #calculate standard deviation from the 95% conf interval
-        std_pred = (mean_upper - mean_pred) / 1.96 # from mean_upper = mean_pred + 1.96 * std
+        #calculate standard deviation from the alpha conf interval
+        std_pred = (mean_upper - mean_pred) / 1.645 # from mean_upper = mean_pred + 1.1645 * std
         #calculate z score
         z_score = (0 - mean_pred) / std_pred
         #pvalue from zscore
@@ -442,13 +442,13 @@ class CausalImpact(object):
             summary = pd.DataFrame(summary, columns=["Average", "Cumulative"],
                                    index=["Actual",
                                           "Predicted",
-                                          "95% CI",
+                                          "90% CI",
                                           " ",
                                           "Absolute Effect",
-                                          "95% CI",
+                                          "90% CI",
                                           " ",
                                           "Relative Effect",
-                                          "95% CI",
+                                          "90% CI",
                                           " ",
                                           "P-value",
                                           "Prob. of Causal Effect"])
