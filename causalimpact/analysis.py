@@ -356,10 +356,10 @@ class CausalImpact(object):
         confidence = "{}%".format(int((1 - alpha) * 100))
         post_period = self.params["post_period"]
         post_inf = self.inferences.loc[post_period[0]:post_period[1], :]
-        post_point_resp = post_inf.loc[:, "response"]
-        post_point_pred = post_inf.loc[:, "point_pred"]
-        post_point_upper = post_inf.loc[:, "point_pred_upper"]
-        post_point_lower = post_inf.loc[:, "point_pred_lower"]
+        post_point_resp = post_inf.loc[1: , "response"]
+        post_point_pred = post_inf.loc[1:, "point_pred"]
+        post_point_upper = post_inf.loc[1:, "point_pred_upper"]
+        post_point_lower = post_inf.loc[1:, "point_pred_lower"]
 
         mean_resp = post_point_resp.mean()
         mean_resp_fmt = "{:.1f}".format(mean_resp)
